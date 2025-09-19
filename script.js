@@ -1,75 +1,73 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'GLTFLoader';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-const loader = document.getElementById('loader');
-const container = document.getElementById('container');
-const progressText = document.getElementById('progress');
+let scene, camera, renderer, flowers;
 
-let modelLoaded = false;
+function init() {
+    // 1. Configurar la escena
+    scene = new THREE.Scene();
+    
+    // 2. Configurar la cámara
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
-// -------------------------------------------------------------
-// 1. CONFIGURACIÓN BÁSICA DE LA ESCENA THREE.JS
-// -------------------------------------------------------------
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-container.appendChild(renderer.domElement);
+    // 3. Configurar el renderizador
+    const canvas = document.getElementById('scene-container');
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Agrega una luz para que el modelo no se vea completamente negro
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(ambientLight);
+    // 4. Añadir luces
+    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 10, 5);
+    scene.add(directionalLight);
 
-// -------------------------------------------------------------
-// 2. CARGAR EL MODELO 3D DE LAS FLORES
-// -------------------------------------------------------------
-const gltfLoader = new GLTFLoader();
+    // 5. Cargar el modelo 3D de las flores
+    const loader = new GLTFLoader();
+    loader.load('assets/flowers.glb', (gltf) => {
+        flowers = gltf.scene;
+        scene.add(flowers);
 
-function loadModel() {
-    // Reemplaza 'ruta/a/tu/modelo.gltf' con la ruta real de tu archivo de flores
-    gltfLoader.load('ruta/a/tu/modelo.gltf', (gltf) => {
-        const model = gltf.scene;
-        scene.add(model);
-        
-        // Simplemente movemos la cámara para ver el modelo
-        camera.position.set(0, 1.5, 4); 
+        // Ajustar posición y escala si es necesario
+        flowers.scale.set(1, 1, 1);
+        flowers.position.y = -1;
 
-        // Una vez que el modelo se carga, actualizamos el estado
-        modelLoaded = true;
+        // Iniciar la animación
+        animate();
+    });
 
-    }, (xhr) => {
-        // Esto es para la pantalla de carga, actualiza el porcentaje
-        let progress = Math.round(xhr.loaded / xhr.total * 100);
-        progressText.textContent = progress;
-        if (progress === 100) {
-            // Ocultamos el loader cuando la carga es completa
-            loader.style.display = 'none';
-            container.style.display = 'block';
-            setTimeout(() => {
-                container.classList.add('visible');
-            }, 100);
-        }
-    }, (error) => {
-        console.error('An error happened:', error);
+    // Manejar el redimensionamiento de la ventana
+    window.addEventListener('resize', onWindowResize);
+
+    // Manejar el clic en el botón de "¡Click Me!"
+    document.querySelector('.click-me-box').addEventListener('click', () => {
+        document.querySelector('.click-me-box').classList.add('hidden');
+        const messageBox = document.querySelector('.message-box');
+        messageBox.style.display = 'block'; // Mostrar el mensaje
+        setTimeout(() => {
+            messageBox.style.opacity = '1';
+        }, 10);
+        document.getElementById('audio').play(); // Reproducir la música
     });
 }
 
-// -------------------------------------------------------------
-// 3. BUCLE DE ANIMACIÓN
-// -------------------------------------------------------------
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-
-// Llamamos a la función de carga e iniciamos la animación
-loadModel();
-animate();
-
-// Maneja el redimensionamiento de la ventana
-window.addEventListener('resize', () => {
+function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Animar las flores (un ejemplo simple de rotación)
+    if (flowers) {
+        flowers.rotation.y += 0.005;
+    }
+
+    renderer.render(scene, camera);
+}
+
+// Iniciar la aplicación
+init();
