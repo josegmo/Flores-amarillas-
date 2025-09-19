@@ -1,72 +1,52 @@
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #000;
     font-family: Arial, sans-serif;
-    color: #fff;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    background: url('assets/background.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
-#loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.loader-content p {
-    font-size: 1.5rem;
-    color: #FFD700;
-    margin-top: 20px;
-}
-
-/* El corazón de carga (opcional, pero se ve bien) */
-.heart {
-    width: 20px;
-    height: 20px;
-    background-color: #e21c3b;
-    transform: rotate(-45deg);
-    position: relative;
-    margin: 20px;
-}
-
-.heart::before,
-.heart::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    background-color: #e21c3b;
-    border-radius: 50%;
+#scene-container {
+    display: block;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
-}
-
-.heart::before {
-    top: -10px;
-    left: 0;
-}
-
-.heart::after {
     top: 0;
-    left: 10px;
+    left: 0;
+    z-index: 1; /* El canvas está en una capa inferior */
 }
 
-/* Estilos para el contenedor principal */
-#container {
-    opacity: 0;
+.overlay-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2; /* El contenido 2D está encima del canvas */
+    color: white;
+    text-align: center;
+}
+
+.click-me-box {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+.message-box {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
     transition: opacity 1s ease-in-out;
 }
 
-#container.visible {
-    opacity: 1;
+.hidden {
+    display: none;
+    opacity: 0;
 }
+
+/* Puedes añadir más estilos para los mensajes y el reproductor de música aquí */
