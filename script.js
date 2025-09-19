@@ -25,7 +25,7 @@ function init() {
 
     // 5. Cargar el modelo 3D de las flores
     const loader = new GLTFLoader();
-    loader.load('assets/flowers.glb', (gltf) => {
+    loader.load('Assets/Flowers.glb', (gltf) => {
         flowers = gltf.scene;
         scene.add(flowers);
 
