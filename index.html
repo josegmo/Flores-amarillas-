@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flores 3D</title>
+    <title>Flores Amarillas 3D</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <div class="heart"></div>
-            <p>Cargando campo de flores... <span id="progress">0</span>%</p>
+    <canvas id="scene-container"></canvas>
+
+    <div class="overlay-container" id="overlay">
+        <div class="click-me-box">
+            <h1>¡Click Me!</h1>
+        </div>
+        <div class="message-box hidden">
+            <p>¡Feliz 21 de septiembre! 🌻</p>
+            <div class="music-player">
+                <audio id="audio" src="assets/song.mp3" controls></audio>
+            </div>
         </div>
     </div>
-    
-    <div id="container" style="display: none;">
-        <h1>¡Click Me!</h1>
-    </div>
 
-    <script type="importmap">
-        {
-          "imports": {
-            "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
-            "GLTFLoader": "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js"
-          }
-        }
-    </script>
-
-    <script src="script.js" type="module"></script>
-
+    <script type="module" src="script.js"></script>
 </body>
 </html>
