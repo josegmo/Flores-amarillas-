@@ -19,7 +19,16 @@
         <h1>¡Click Me!</h1>
     </div>
 
-    <script src="script.js"></script>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+            "GLTFLoader": "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js"
+          }
+        }
+    </script>
+
+    <script src="script.js" type="module"></script>
 
 </body>
 </html>
