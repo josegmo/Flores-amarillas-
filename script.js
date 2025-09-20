@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+    import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 let scene, camera, renderer, flowers;
@@ -8,7 +8,7 @@ let clickMeVisible = true;
 // El PIN que el usuario debe ingresar para desbloquear. Puedes cambiarlo aquí.
 const CORRECT_PIN = "2109"; 
 
-// --- Lógica del Candado ---
+// --- Lógica del Candado y Carga ---
 const pinLockScreen = document.getElementById('pin-lock');
 const pinInputs = document.querySelectorAll('.pin-input');
 const unlockBtn = document.getElementById('unlock-btn');
@@ -18,8 +18,8 @@ const clickMeBox = document.querySelector('.click-me-box');
 const messageBox = document.querySelector('.message-box');
 const dedicationBox = document.querySelector('.dedication-box');
 
-// Muestra el candado y oculta el resto de la página al inicio
-overlayContainer.style.display = 'none';
+// La interfaz principal está oculta al inicio
+overlayContainer.classList.add('hidden');
 
 pinInputs[0].focus();
 
@@ -38,11 +38,11 @@ unlockBtn.addEventListener('click', () => {
     });
 
     if (enteredPin === CORRECT_PIN) {
-        // PIN correcto, oculta el candado y muestra la pantalla de carga
+        // PIN correcto, oculta el candado
         pinLockScreen.classList.add('pin-unlocked');
-        loadingScreen.classList.remove('hidden-loading');
         
-        // Inicia el proceso de carga y animación
+        // Muestra la pantalla de carga y comienza la inicialización 3D
+        loadingScreen.classList.remove('hidden');
         init();
     } else {
         alert("PIN incorrecto. Inténtalo de nuevo.");
@@ -55,47 +55,44 @@ unlockBtn.addEventListener('click', () => {
 
 // --- Lógica de la animación 3D ---
 function init() {
-    // 1. Configurar la escena
+    // 1. Configurar la escena y la cámara
     scene = new THREE.Scene();
-    
-    // 2. Configurar la cámara
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
 
-    // 3. Configurar el renderizador
+    // 2. Configurar el renderizador
     const canvas = document.getElementById('scene-container');
     renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // 4. Añadir luces
+    // 3. Añadir luces
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(0, 10, 5);
     scene.add(directionalLight);
 
-    // 5. Cargar el modelo 3D de las flores
+    // 4. Cargar el modelo 3D de las flores
     const loader = new GLTFLoader();
     loader.load('Assets/Flowers.glb', (gltf) => {
         flowers = gltf.scene;
         scene.add(flowers);
-
-        // Ocultar la pantalla de carga después de que el modelo 3D se cargue
-        loadingScreen.classList.add('hidden-loading');
-        overlayContainer.style.display = 'flex'; // Mostrar la interfaz principal
-
-        // Ajustar posición y escala si es necesario
         flowers.scale.set(1, 1, 1);
         flowers.position.y = -1;
+
+        // Ocultar la pantalla de carga después de que el modelo se cargue
+        loadingScreen.classList.add('hidden');
+        
+        // Mostrar la interfaz principal de forma fluida
+        overlayContainer.classList.remove('hidden');
 
         // Iniciar la animación
         animate();
     });
 
-    // 6. Configurar la zona de clic para la dedicatoria
+    // 5. Configurar la zona de clic para la dedicatoria
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
-
     const geometry = new THREE.PlaneGeometry(10, 10);
     const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide, transparent: true, opacity: 0 });
     clickablePlane = new THREE.Mesh(geometry, material);
@@ -103,9 +100,8 @@ function init() {
     clickablePlane.position.y = -1;
     scene.add(clickablePlane);
 
+    // 6. Event listeners
     window.addEventListener('click', onMouseClick, false);
-    
-    // Manejar el redimensionamiento de la ventana
     window.addEventListener('resize', onWindowResize);
 }
 
@@ -127,19 +123,13 @@ function animate() {
 
 // Función para manejar los clics del mouse
 function onMouseClick(event) {
-    // Si la caja de "Click Me!" está visible, al hacer clic en cualquier lugar se oculta
     if (clickMeVisible) {
         clickMeBox.classList.add('hidden');
         clickMeVisible = false;
 
-        // Mostrar el mensaje principal después de un clic
-        messageBox.style.display = 'block';
-        setTimeout(() => {
-            messageBox.style.opacity = '1';
-        }, 10);
+        messageBox.classList.remove('hidden');
         document.getElementById('audio').play();
     } else {
-        // Convertir las coordenadas del mouse a un rango de -1 a +1
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -148,11 +138,13 @@ function onMouseClick(event) {
 
         for (let i = 0; i < intersects.length; i++) {
             if (intersects[i].object === clickablePlane) {
-                // Si el clic es en el plano invisible, mostrar la dedicatoria
                 dedicationBox.classList.remove('hidden');
-                dedicationBox.style.opacity = '1';
-                // Ocultar el mensaje principal
                 messageBox.classList.add('hidden');
+                // Asegurar que la dedicatoria se muestre por completo
+                setTimeout(() => {
+                    dedicationBox.style.opacity = '1';
+                }, 10);
+                break;
             }
         }
     }
