@@ -112,3 +112,23 @@ body {
 .pin-unlocked {
     display: none !important;
 }
+/* ... (tus estilos anteriores) ... */
+
+.dedication-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    transition: opacity 1s ease-in-out;
+    opacity: 0;
+    z-index: 3;
+}
+
+.hidden-dedication {
+    display: none;
+    }
