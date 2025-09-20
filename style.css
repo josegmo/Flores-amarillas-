@@ -13,43 +13,9 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; /* El canvas está en una capa inferior */
+    z-index: 1;
 }
 
-.overlay-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 2; /* El contenido 2D está encima del canvas */
-    color: white;
-    text-align: center;
-}
-
-.click-me-box {
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 20px 40px;
-    border-radius: 10px;
-}
-
-.message-box {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 20px;
-    transition: opacity 1s ease-in-out;
-}
-
-.hidden {
-    display: none;
-    opacity: 0;
-}
-
-/* Puedes añadir más estilos para los mensajes y el reproductor de música aquí */
 /* Estilos para la pantalla de bloqueo con PIN */
 #pin-lock {
     position: fixed;
@@ -108,11 +74,77 @@ body {
     background-color: #ffc;
 }
 
-/* Oculta la pantalla de bloqueo cuando el PIN es correcto */
+/* Estilos para la pantalla de carga */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease-in-out;
+    opacity: 1;
+    z-index: 99;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #ff0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden-loading {
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
 .pin-unlocked {
     display: none !important;
 }
-/* ... (tus estilos anteriores) ... */
+
+/* Estilos para el resto de la interfaz */
+.overlay-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    color: white;
+    text-align: center;
+}
+
+.click-me-box {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+.message-box {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    transition: opacity 1s ease-in-out;
+}
 
 .dedication-box {
     position: absolute;
@@ -129,6 +161,7 @@ body {
     z-index: 3;
 }
 
-.hidden-dedication {
+.hidden {
     display: none;
-    }
+    opacity: 0;
+}
