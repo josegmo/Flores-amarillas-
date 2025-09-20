@@ -50,3 +50,65 @@ body {
 }
 
 /* Puedes añadir más estilos para los mensajes y el reproductor de música aquí */
+/* Estilos para la pantalla de bloqueo con PIN */
+#pin-lock {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.pin-container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+}
+
+.pin-fields {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pin-input {
+    width: 40px;
+    height: 50px;
+    font-size: 2em;
+    text-align: center;
+    background: #222;
+    border: 2px solid #555;
+    color: white;
+    border-radius: 5px;
+}
+
+#unlock-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#unlock-btn:hover {
+    background-color: #ffc;
+}
+
+/* Oculta la pantalla de bloqueo cuando el PIN es correcto */
+.pin-unlocked {
+    display: none !important;
+}
