@@ -13,7 +13,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 1; 
 }
 
 /* Estilos para la pantalla de bloqueo con PIN */
@@ -107,17 +107,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.hidden-loading {
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-}
-
-.pin-unlocked {
-    display: none !important;
-}
-
-/* Estilos para el resto de la interfaz */
 .overlay-container {
     position: relative;
     width: 100vw;
@@ -129,6 +118,7 @@ body {
     z-index: 2;
     color: white;
     text-align: center;
+    transition: opacity 1s ease-in-out;
 }
 
 .click-me-box {
@@ -143,7 +133,6 @@ body {
     padding: 20px;
     border-radius: 15px;
     margin-top: 20px;
-    transition: opacity 1s ease-in-out;
 }
 
 .dedication-box {
@@ -157,9 +146,8 @@ body {
     color: white;
     text-align: center;
     transition: opacity 1s ease-in-out;
-    opacity: 0;
-    z-index: 3;
 }
+
 .hidden {
     opacity: 0;
     pointer-events: none;
