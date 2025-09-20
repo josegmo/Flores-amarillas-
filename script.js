@@ -71,3 +71,53 @@ function animate() {
 
 // Iniciar la aplicación
 init();
+// La variable para el PIN correcto. Puedes cambiarlo aquí.
+const CORRECT_PIN = "2109"; 
+
+// --- Lógica del Candado ---
+const pinLockScreen = document.getElementById('pin-lock');
+const pinInputs = document.querySelectorAll('.pin-input');
+const unlockBtn = document.getElementById('unlock-btn');
+const overlayContainer = document.getElementById('overlay');
+
+// El resto de la página se oculta inicialmente
+overlayContainer.style.display = 'none';
+
+pinInputs[0].focus(); // Enfoca el primer campo al cargar
+
+// Mueve el foco al siguiente campo automáticamente
+pinInputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1 && index < pinInputs.length - 1) {
+            pinInputs[index + 1].focus();
+        }
+    });
+});
+
+unlockBtn.addEventListener('click', () => {
+    let enteredPin = "";
+    pinInputs.forEach(input => {
+        enteredPin += input.value;
+    });
+
+    if (enteredPin === CORRECT_PIN) {
+        // Si el PIN es correcto, desbloquea la pantalla
+        pinLockScreen.classList.add('pin-unlocked');
+        // Muestra el resto de la página
+        overlayContainer.style.display = 'flex';
+    } else {
+        // Si el PIN es incorrecto, reinicia los campos y muestra un mensaje
+        alert("PIN incorrecto. Inténtalo de nuevo.");
+        pinInputs.forEach(input => {
+            input.value = '';
+        });
+        pinInputs[0].focus();
+    }
+});
+
+// --- Lógica de la animación 3D ---
+// Pega todo tu código actual de init() y animate() aquí, sin la llamada a init()
+// ... (Todo el código de init(), animate(), etc. de tu script.js)
+// Asegúrate de que init() no se llame hasta que la pantalla de bloqueo esté desbloqueada
+// Puedes llamarla al final del script si la pantalla de bloqueo se oculta al inicio.
+init();
