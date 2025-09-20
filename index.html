@@ -17,40 +17,49 @@
     </script>
 </head>
 <body>
-<div id="pin-lock">
-    <div class="pin-container">
-        <h2>Ingresa el PIN para desbloquear</h2>
-        <div class="pin-fields">
-            <input type="password" maxlength="1" class="pin-input" />
-            <input type="password" maxlength="1" class="pin-input" />
-            <input type="password" maxlength="1" class="pin-input" />
-            <input type="password" maxlength="1" class="pin-input" />
+
+    <div id="pin-lock">
+        <div class="pin-container">
+            <h2>Ingresa el PIN para desbloquear</h2>
+            <div class="pin-fields">
+                <input type="password" maxlength="1" class="pin-input" />
+                <input type="password" maxlength="1" class="pin-input" />
+                <input type="password" maxlength="1" class="pin-input" />
+                <input type="password" maxlength="1" class="pin-input" />
+            </div>
+            <button id="unlock-btn">Desbloquear</button>
         </div>
-        <button id="unlock-btn">Desbloquear</button>
     </div>
-</div>
+
+    <div id="loading-screen" class="hidden-loading">
+        <div class="loader"></div>
+        <p>Cargando...</p>
+    </div>
+
     <canvas id="scene-container"></canvas>
 
     <div class="overlay-container" id="overlay">
-    <div class="click-me-box">
-        <h1>¡Click Me!</h1>
-    </div>
-    <div class="message-box hidden">
-        <p>¡Feliz 21 de septiembre! 🌻</p>
-        <div class="music-player">
-            <audio id="audio" src="Assets/Floricienta _ Flores Amarillas [Letra](MP3_160K).mp3" controls></audio>
+        <div class="click-me-box">
+            <h1>¡Click Me!</h1>
+        </div>
+        
+        <div class="message-box hidden">
+            <p>¡Feliz 21 de septiembre! 🌻</p>
+            <div class="music-player">
+                <audio id="audio" src="Assets/Floricienta _ Flores Amarillas [Letra](MP3_160K).mp3" controls></audio>
+            </div>
+        </div>
+        
+        <div class="dedication-box hidden">
+            <p>
+                Toda mi vida te quise dar<br>
+                un beso de flores amarillas<br>
+                que florecieran de tu corazón<br>
+                para alegrar cada rincón...
+            </p>
         </div>
     </div>
-    
-    <div class="dedication-box hidden">
-        <p>
-            Toda mi vida te quise dar<br>
-            un beso de flores amarillas<br>
-            que florecieran de tu corazón<br>
-            para alegrar cada rincón...
-        </p>
-    </div>
-    </div>
+
     <script type="module" src="script.js"></script>
 </body>
 </html>
