@@ -160,8 +160,8 @@ body {
     opacity: 0;
     z-index: 3;
 }
-
 .hidden {
-    display: none;
     opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
 }
