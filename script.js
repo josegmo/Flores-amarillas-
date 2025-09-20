@@ -121,3 +121,54 @@ unlockBtn.addEventListener('click', () => {
 // Asegúrate de que init() no se llame hasta que la pantalla de bloqueo esté desbloqueada
 // Puedes llamarla al final del script si la pantalla de bloqueo se oculta al inicio.
 init();
+// Agrega estas variables al inicio de tu script
+let raycaster, mouse, clickablePlane;
+
+// ... (El resto de tu código)
+
+function init() {
+    // ... (Tu código de configuración de escena, cámara, etc.) ...
+    
+    // --- Lógica de la Dedicatoria ---
+    // 1. Crear el Raycaster y el vector del mouse
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
+    // 2. Crear un objeto invisible para el área de clic
+    const geometry = new THREE.PlaneGeometry(10, 10); // Un plano de 10x10 unidades
+    const material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide, transparent: true, opacity: 0 }); // Lo hacemos invisible
+    clickablePlane = new THREE.Mesh(geometry, material);
+    clickablePlane.rotation.x = -Math.PI / 2; // Lo rotamos para que esté horizontal en el piso
+    clickablePlane.position.y = -1; // Lo colocamos en la misma posición de las flores
+    scene.add(clickablePlane);
+
+    // 3. Añadir el evento de clic
+    window.addEventListener('click', onMouseClick, false);
+
+    // ... (El resto de tu código) ...
+}
+
+function onMouseClick(event) {
+    // Convertir las coordenadas del mouse a un rango de -1 a +1
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Actualizar el raycaster con la cámara y las coordenadas del mouse
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calcular los objetos que intersectan el rayo
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    // Verificar si el rayo ha chocado con nuestro plano invisible
+    for (let i = 0; i < intersects.length; i++) {
+        if (intersects[i].object === clickablePlane) {
+            // Se hizo clic en el área correcta, muestra el texto
+            const dedicationBox = document.querySelector('.dedication-box');
+            dedicationBox.classList.remove('hidden');
+            dedicationBox.style.opacity = '1';
+            
+            // Oculta la caja de "Click Me!"
+            document.querySelector('.click-me-box').classList.add('hidden');
+        }
+    }
+        }
